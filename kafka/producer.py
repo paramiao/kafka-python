@@ -227,6 +227,9 @@ class SimpleProducer(Producer):
         return self.partition_cycles[topic].next()
 
     def send_messages(self, topic, *msg):
+        if type(topic) == unicode:
+            log.exception("topic must be encode to str, not unicode")
+            raise
         partition = self._next_partition(topic)
         return super(SimpleProducer, self).send_messages(topic, partition, *msg)
 
